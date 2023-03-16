@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="VPBanner">
+        <attr name="vp_duration" format="integer" />
+        <attr name="vp_loop" format="boolean" />
+    </declare-styleable>
+</resources>
