@@ -1,15 +1,14 @@
 package com.hlox.android.banner
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.hlox.android.banner.adapter.MyVpAdapter
 import com.hlox.android.banner.data.DataStore
-import com.hlox.android.banner.databinding.ActivityMainBinding
-import com.hlox.android.vpbanner.RiseInTransformer
+import com.hlox.android.banner.databinding.ActivityVpBinding
 
-class MainActivity : AppCompatActivity() {
+class VPBannerActivity : AppCompatActivity() {
     private val mBinding by lazy {
-        ActivityMainBinding.inflate(layoutInflater)
+        ActivityVpBinding.inflate(layoutInflater)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

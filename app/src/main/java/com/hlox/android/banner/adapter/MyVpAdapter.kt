@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.hlox.android.banner.data.ImageData
-import com.hlox.android.banner.databinding.ActivityMainBinding
 import com.hlox.android.banner.databinding.PageItemBinding
 import com.hlox.android.vpbanner.VPAdapter
 import com.hlox.android.vpbanner.VPBanner
