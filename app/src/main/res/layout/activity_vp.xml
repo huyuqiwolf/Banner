@@ -3,20 +3,112 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:clipChildren="false"
     android:layerType="software"
-    android:layout_height="match_parent"
     tools:context=".VPBannerActivity">
 
     <com.hlox.android.vpbanner.VPBanner
         android:id="@+id/vp_banner"
-        android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        app:vp_loop="true"
-        app:vp_duration="1000"
+        android:layout_margin="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:vp_duration="1000"
+        app:vp_loop_duration="6000"
+        app:vp_auto_loop="true"
+        app:vp_loop_orientation="ltr"
+        app:vp_loop="true" />
+
+    <Button
+        android:id="@+id/btn_start_loop"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/guideline"
+        android:text="开始轮播"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/vp_banner" />
+
+    <Button
+        android:id="@+id/btn_stop_loop"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintStart_toEndOf="@+id/guideline"
+        android:text="结束轮播"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_start_loop"
+        app:layout_constraintTop_toTopOf="@+id/btn_start_loop" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:layout_width="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="16dp"
+        android:animateLayoutChanges="true"
+        app:chipSpacing="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_start_loop"
+        android:id="@+id/chip_group"
+        app:singleSelection="true"
+        android:layout_height="wrap_content" >
+        <com.google.android.material.chip.Chip
+            android:id="@+id/cp_ltr"
+            android:checked="true"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            app:checkedIconTint="#f9c6d7"
+            android:text="LTR"
+            app:chipIconTint="#c6d7f9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/cp_rtl"
+            android:text="RTL"
+            style="@style/Widget.MaterialComponents.Chip.Choice"
+            app:checkedIconTint="#f9c6d7"
+            app:chipIconTint="#c6d7f9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.chip.ChipGroup>
+
+    <EditText
+        android:id="@+id/et_duration"
+        android:inputType="number"
+        android:imeOptions="actionDone"
+        android:hint="默认5000ms"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/guideline"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chip_group" />
+
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:layout_constraintStart_toEndOf="@+id/guideline"
+        android:text="保存轮播时长和方向"
+        android:textAllCaps="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/et_duration"
+        app:layout_constraintTop_toTopOf="@+id/et_duration" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
