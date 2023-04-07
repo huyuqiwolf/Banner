@@ -6,6 +6,7 @@ import android.os.Looper
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
+import android.view.View
 import androidx.annotation.IntDef
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -52,6 +53,8 @@ class VPBanner : ViewPager, DefaultLifecycleObserver {
     private var mAutoLoop = false
     private var mResumed = false
 
+    private var mVisibleChangeListener: VisibleChangeListener? = null
+
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         // 读取自定义的属性
@@ -93,8 +96,10 @@ class VPBanner : ViewPager, DefaultLifecycleObserver {
                 }
             }
         }
-        mLoopHandler?.removeMessages(LOOP_NEXT)
-        mLoopHandler?.sendEmptyMessageDelayed(LOOP_NEXT, mLoopDuration)
+        if (mLoopHandler?.hasMessages(LOOP_NEXT) != true) {
+            Log.e(TAG,"startLoop")
+            mLoopHandler?.sendEmptyMessageDelayed(LOOP_NEXT, mLoopDuration)
+        }
     }
 
     /**
@@ -180,6 +185,10 @@ class VPBanner : ViewPager, DefaultLifecycleObserver {
         mLoop?.let { removeOnPageChangeListener(it) }
     }
 
+    fun setVisibleChangeListener(listener: VisibleChangeListener?) {
+        this.mVisibleChangeListener = listener
+    }
+
     override fun onResume(owner: LifecycleOwner) {
         Log.d(TAG, "onResume")
         this.mResumed = true
@@ -187,7 +196,7 @@ class VPBanner : ViewPager, DefaultLifecycleObserver {
     }
 
     override fun onPause(owner: LifecycleOwner) {
-        Log.d(TAG, "onResume")
+        Log.d(TAG, "onPause")
         this.mResumed = false
         stopLoop()
     }
@@ -205,6 +214,45 @@ class VPBanner : ViewPager, DefaultLifecycleObserver {
     private fun prepareLoop() {
         if (this.mAutoLoop && this.mResumed) {
             startLoop()
+        }
+    }
+
+    private var mAttached = false
+    override fun onVisibilityChanged(changedView: View, visibility: Int) {
+        Log.e(TAG, "onVisibilityChanged ${changedView == this}, vis: $visibility")
+        dispatchVisible(visibility)
+    }
+
+    override fun onWindowVisibilityChanged(visibility: Int) {
+        super.onWindowVisibilityChanged(visibility)
+        Log.e(TAG, "onWindowVisibilityChanged $visibility")
+        dispatchVisible(visibility)
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        Log.e(TAG, "onAttachedToWindow ")
+        this.mAttached = true
+    }
+
+    override fun onDetachedFromWindow() {
+        Log.e(TAG, "onDetachedFromWindow ")
+        super.onDetachedFromWindow()
+        this.mAttached = false
+    }
+
+    private fun dispatchVisible(visibility: Int) {
+        val visible = mAttached && visibility == VISIBLE
+        if (visible) {
+            prepareLoop()
+        } else {
+            stopLoop()
+        }
+        mVisibleChangeListener?.let {
+            when (visible) {
+                true -> it.onShown()
+                else -> it.onDismiss()
+            }
         }
     }
 }

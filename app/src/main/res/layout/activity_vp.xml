@@ -1,114 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clipChildren="false"
-    android:layerType="software"
-    tools:context=".VPBannerActivity">
+    android:layout_height="wrap_content">
 
-    <com.hlox.android.vpbanner.VPBanner
-        android:id="@+id/vp_banner"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_margin="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:vp_duration="1000"
-        app:vp_loop_duration="6000"
-        app:vp_auto_loop="true"
-        app:vp_loop_orientation="ltr"
-        app:vp_loop="true" />
-
-    <Button
-        android:id="@+id/btn_start_loop"
-        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/guideline"
-        android:text="开始轮播"
-        android:textAllCaps="false"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vp_banner" />
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btn_stop_loop"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:layout_constraintStart_toEndOf="@+id/guideline"
-        android:text="结束轮播"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_start_loop"
-        app:layout_constraintTop_toTopOf="@+id/btn_start_loop" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:layerType="software"
+            tools:context=".VPBannerActivity">
 
+            <com.hlox.android.vpbanner.VPBanner
+                android:id="@+id/vp_banner"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_margin="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:vp_auto_loop="true"
+                app:vp_duration="1000"
+                app:vp_loop="true"
+                app:vp_loop_duration="6000"
+                app:vp_loop_orientation="ltr" />
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+            <Button
+                android:id="@+id/btn_start_loop"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="开始轮播"
+                android:textAllCaps="false"
+                app:layout_constraintEnd_toEndOf="@+id/guideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/vp_banner" />
 
-    <com.google.android.material.chip.ChipGroup
-        android:layout_width="0dp"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="16dp"
-        android:animateLayoutChanges="true"
-        app:chipSpacing="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_start_loop"
-        android:id="@+id/chip_group"
-        app:singleSelection="true"
-        android:layout_height="wrap_content" >
-        <com.google.android.material.chip.Chip
-            android:id="@+id/cp_ltr"
-            android:checked="true"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-            app:checkedIconTint="#f9c6d7"
-            android:text="LTR"
-            app:chipIconTint="#c6d7f9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/cp_rtl"
-            android:text="RTL"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-            app:checkedIconTint="#f9c6d7"
-            app:chipIconTint="#c6d7f9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </com.google.android.material.chip.ChipGroup>
-
-    <EditText
-        android:id="@+id/et_duration"
-        android:inputType="number"
-        android:imeOptions="actionDone"
-        android:hint="默认5000ms"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/guideline"
-        android:textAllCaps="false"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chip_group" />
-
-    <Button
-        android:id="@+id/btn_save"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:layout_constraintStart_toEndOf="@+id/guideline"
-        android:text="保存轮播时长和方向"
-        android:textAllCaps="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@+id/et_duration"
-        app:layout_constraintTop_toTopOf="@+id/et_duration" />
+            <Button
+                android:id="@+id/btn_stop_loop"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="结束轮播"
+                android:textAllCaps="false"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_start_loop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/guideline"
+                app:layout_constraintTop_toTopOf="@+id/btn_start_loop" />
 
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:animateLayoutChanges="true"
+                app:chipSpacing="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_start_loop"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/cp_ltr"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="LTR"
+                    app:checkedIconTint="#f9c6d7"
+                    app:chipIconTint="#c6d7f9" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/cp_rtl"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="RTL"
+                    app:checkedIconTint="#f9c6d7"
+                    app:chipIconTint="#c6d7f9" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <EditText
+                android:id="@+id/et_duration"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:hint="默认5000ms"
+                android:imeOptions="actionDone"
+                android:inputType="number"
+                android:textAllCaps="false"
+                app:layout_constraintEnd_toEndOf="@+id/guideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/chip_group" />
+
+            <Button
+                android:id="@+id/btn_save"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="保存轮播时长和方向"
+                android:textAllCaps="false"
+                app:layout_constraintBottom_toBottomOf="@+id/et_duration"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/guideline"
+                app:layout_constraintTop_toTopOf="@+id/et_duration" />
+
+
+            <Button
+                android:id="@+id/btn_next"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:text="下一页"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_save" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <View
+            android:background="#FF345678"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+        <View
+            android:background="#FF876543"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+        <View
+            android:background="#FFABCDEF"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+        <View
+            android:background="#FFFEDCBA"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+        <View
+            android:background="#FFA9C8D7"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+        <View
+            android:background="#FFE8A9C1"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+        <View
+            android:background="#FF2CBEA4"
+            android:layout_width="match_parent"
+            android:layout_height="100dp" />
+
+    </LinearLayout>
+</ScrollView>

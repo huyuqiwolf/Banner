@@ -1,11 +1,14 @@
 package com.hlox.android.banner
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.hlox.android.banner.adapter.MyVpAdapter
 import com.hlox.android.banner.data.DataStore
 import com.hlox.android.banner.databinding.ActivityVpBinding
 import com.hlox.android.vpbanner.VPBanner
+import com.hlox.android.vpbanner.VisibleChangeListener
 
 class VPBannerActivity : AppCompatActivity() {
     private val mBinding by lazy {
@@ -40,6 +43,24 @@ class VPBannerActivity : AppCompatActivity() {
             mBinding.vpBanner.setLoopOrientation(orientation)
         }
         lifecycle.addObserver(mBinding.vpBanner)
+
+        mBinding.btnNext.setOnClickListener {
+            // 该按钮就是用来看跳转到其他页面是否会暂停轮播，可以观察log
+            startActivity(Intent(this@VPBannerActivity,NextActivity::class.java))
+        }
+
+        mBinding.vpBanner.setVisibleChangeListener(object:VisibleChangeListener{
+            override fun onShown() {
+                Log.e(TAG,"onShow")
+            }
+
+            override fun onDismiss() {
+                Log.e(TAG,"onDismiss")
+            }
+        })
     }
 
+    companion object{
+        private const val TAG = "VPBannerActivity"
+    }
 }
