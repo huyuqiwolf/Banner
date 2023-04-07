@@ -11,6 +11,8 @@ import androidx.annotation.IntDef
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewpager.widget.ViewPager
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 /**
  *
@@ -24,6 +26,7 @@ class VPBanner : ViewPager, DefaultLifecycleObserver {
         private const val DEFAULT_DURATION = -1
         private const val LOOP_NEXT = 0x1000
         private const val DEFAULT_LOOP_DURATION = 5000
+        private const val MOVE_FLAG = 100
     }
 
     @IntDef(LoopOrientation.RTL, LoopOrientation.LTR)
@@ -54,6 +57,8 @@ class VPBanner : ViewPager, DefaultLifecycleObserver {
     private var mResumed = false
 
     private var mVisibleChangeListener: VisibleChangeListener? = null
+
+    private var mClickListener: PageClickListener? = null
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
@@ -97,9 +102,13 @@ class VPBanner : ViewPager, DefaultLifecycleObserver {
             }
         }
         if (mLoopHandler?.hasMessages(LOOP_NEXT) != true) {
-            Log.e(TAG,"startLoop")
+            Log.e(TAG, "startLoop")
             mLoopHandler?.sendEmptyMessageDelayed(LOOP_NEXT, mLoopDuration)
         }
+    }
+
+    fun setPageClickListener(listener: PageClickListener?) {
+        this.mClickListener = listener
     }
 
     /**
@@ -201,10 +210,55 @@ class VPBanner : ViewPager, DefaultLifecycleObserver {
         stopLoop()
     }
 
+    private var mMoved = false
+    private var mDownX = 0F
+    private var mDownY = 0F
+
+    /**
+     * 当前事件流结束时，恢复touch处理的相关变量
+     */
+    private fun initTouch() {
+        this.mMoved = false
+        this.mDownX = 0F
+        this.mDownY = 0F
+    }
+
+    private fun calculateMoved(x: Float, y: Float, ev: MotionEvent) {
+        mClickListener?.let {
+            // 超过500ms(系统默认的时间) 我们认为不是点击事件
+            if (ev.eventTime - ev.downTime >= 500) {
+                return
+            }
+            // 移动小于阈值我们认为是点击
+            if (sqrt(((x - mDownX).pow(2) + (y - mDownY).pow(2))) >= MOVE_FLAG) {
+                return
+            }
+            val count = adapter?.count ?: 0
+            if (count == 0) {
+                return
+            }
+            // 由于我们实现无限轮播的方式是重新设置当前选中的item，这里要将currentItem重新映射回去
+            val index = when (currentItem) {
+                in 1..count - 2 -> currentItem - 1
+                0 -> count - 1
+                else -> 0
+            }
+            it.onPageClicked(index)
+        }
+    }
+
     override fun onTouchEvent(ev: MotionEvent?): Boolean {
         when (ev?.action) {
-            MotionEvent.ACTION_DOWN -> stopLoop()
+            MotionEvent.ACTION_DOWN -> {
+                this.mDownY = ev.y
+                this.mDownX = ev.x
+                stopLoop()
+            }
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                val y = ev.y
+                val x = ev.x
+                calculateMoved(x, y, ev)
+                initTouch()
                 prepareLoop()
             }
         }

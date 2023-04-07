@@ -6,10 +6,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.View.OnScrollChangeListener
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.hlox.android.banner.adapter.MyVpAdapter
 import com.hlox.android.banner.data.DataStore
 import com.hlox.android.banner.databinding.ActivityVpBinding
+import com.hlox.android.vpbanner.PageClickListener
 import com.hlox.android.vpbanner.VPBanner
 import com.hlox.android.vpbanner.VisibleChangeListener
 
@@ -21,10 +23,11 @@ class VPBannerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(mBinding.root)
+        val data = DataStore.getImageData()
 //        mBinding.vpBanner.setPageTransformer(true,RiseInTransformer())
         mBinding.vpBanner.pageMargin = 21
         mBinding.vpBanner.adapter = MyVpAdapter(mBinding.vpBanner).apply {
-            setData(DataStore.getImageData())
+            setData(data)
         }
 
         mBinding.vpBanner.resetLoop()
@@ -77,6 +80,12 @@ class VPBannerActivity : AppCompatActivity() {
                 }else{
                     mBinding.vpBanner.stopLoop()
                 }
+            }
+        })
+
+        mBinding.vpBanner.setPageClickListener(object :PageClickListener{
+            override fun onPageClicked(position: Int) {
+                Toast.makeText(this@VPBannerActivity,"position: $position ${data[position]}",Toast.LENGTH_SHORT).show()
             }
         })
     }
