@@ -1,8 +1,11 @@
 package com.hlox.android.banner
 
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.View.OnScrollChangeListener
 import androidx.appcompat.app.AppCompatActivity
 import com.hlox.android.banner.adapter.MyVpAdapter
 import com.hlox.android.banner.data.DataStore
@@ -56,6 +59,24 @@ class VPBannerActivity : AppCompatActivity() {
 
             override fun onDismiss() {
                 Log.e(TAG,"onDismiss")
+            }
+        })
+
+        mBinding.scrollView.setOnScrollChangeListener(object :OnScrollChangeListener{
+            override fun onScrollChange(
+                v: View?,
+                scrollX: Int,
+                scrollY: Int,
+                oldScrollX: Int,
+                oldScrollY: Int
+            ) {
+                val visible = mBinding.vpBanner.getGlobalVisibleRect(Rect())
+                Log.e(TAG,"banner visible : $visible")
+                if(visible){
+                    mBinding.vpBanner.startLoop()
+                }else{
+                    mBinding.vpBanner.stopLoop()
+                }
             }
         })
     }
