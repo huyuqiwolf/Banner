@@ -111,9 +111,11 @@ class VPBanner : ViewPager, DefaultLifecycleObserver {
         mExposureHelper?.startExposure(currentItem)
     }
 
-    fun stopLoop() {
+    fun stopLoop(exposure: Boolean = true) {
         // 停止轮播时结束曝光（不可见时会停止轮播）
-        mExposureHelper?.endExposure()
+        if (exposure) {
+            mExposureHelper?.endExposure()
+        }
         mLoopHandler?.removeMessages(LOOP_NEXT)
     }
 
@@ -258,7 +260,7 @@ class VPBanner : ViewPager, DefaultLifecycleObserver {
             MotionEvent.ACTION_DOWN -> {
                 this.mDownY = ev.y
                 this.mDownX = ev.x
-                stopLoop()
+                stopLoop(false)
             }
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                 val y = ev.y

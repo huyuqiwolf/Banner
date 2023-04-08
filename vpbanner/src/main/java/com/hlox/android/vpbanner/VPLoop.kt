@@ -11,8 +11,7 @@ import androidx.viewpager.widget.ViewPager
  */
 class VPLoop(private val banner: VPBanner) : ViewPager.OnPageChangeListener {
     private var mCurrent = 1
-    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-    }
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) = Unit
 
     override fun onPageSelected(position: Int) {
         this.mCurrent = position
