@@ -10,10 +10,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.hlox.android.banner.adapter.MyVpAdapter
 import com.hlox.android.banner.data.DataStore
+import com.hlox.android.banner.data.ImageData
 import com.hlox.android.banner.databinding.ActivityVpBinding
-import com.hlox.android.vpbanner.PageClickListener
-import com.hlox.android.vpbanner.VPBanner
-import com.hlox.android.vpbanner.VisibleChangeListener
+import com.hlox.android.vpbanner.*
 
 class VPBannerActivity : AppCompatActivity() {
     private val mBinding by lazy {
@@ -52,20 +51,20 @@ class VPBannerActivity : AppCompatActivity() {
 
         mBinding.btnNext.setOnClickListener {
             // 该按钮就是用来看跳转到其他页面是否会暂停轮播，可以观察log
-            startActivity(Intent(this@VPBannerActivity,NextActivity::class.java))
+            startActivity(Intent(this@VPBannerActivity, NextActivity::class.java))
         }
 
-        mBinding.vpBanner.setVisibleChangeListener(object:VisibleChangeListener{
+        mBinding.vpBanner.setVisibleChangeListener(object : VisibleChangeListener {
             override fun onShown() {
-                Log.e(TAG,"onShow")
+                Log.e(TAG, "onShow")
             }
 
             override fun onDismiss() {
-                Log.e(TAG,"onDismiss")
+                Log.e(TAG, "onDismiss")
             }
         })
 
-        mBinding.scrollView.setOnScrollChangeListener(object :OnScrollChangeListener{
+        mBinding.scrollView.setOnScrollChangeListener(object : OnScrollChangeListener {
             override fun onScrollChange(
                 v: View?,
                 scrollX: Int,
@@ -74,23 +73,34 @@ class VPBannerActivity : AppCompatActivity() {
                 oldScrollY: Int
             ) {
                 val visible = mBinding.vpBanner.getGlobalVisibleRect(Rect())
-                Log.e(TAG,"banner visible : $visible")
-                if(visible){
+                Log.e(TAG, "banner visible : $visible")
+                if (visible) {
                     mBinding.vpBanner.startLoop()
-                }else{
+                } else {
                     mBinding.vpBanner.stopLoop()
                 }
             }
         })
 
-        mBinding.vpBanner.setPageClickListener(object :PageClickListener{
+        mBinding.vpBanner.setPageClickListener(object : PageClickListener {
             override fun onPageClicked(position: Int) {
-                Toast.makeText(this@VPBannerActivity,"position: $position ${data[position]}",Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@VPBannerActivity,
+                    "position: $position ${data[position]}",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
+
+
+        mBinding.vpBanner.bindExposureHelper(
+            ExposureHelper(
+                (mBinding.vpBanner.adapter as VPAdapter<ImageData>).getShowDataList()
+            )
+        )
     }
 
-    companion object{
+    companion object {
         private const val TAG = "VPBannerActivity"
     }
 }

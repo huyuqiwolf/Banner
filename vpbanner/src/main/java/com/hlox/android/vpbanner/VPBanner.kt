@@ -60,6 +60,8 @@ class VPBanner : ViewPager, DefaultLifecycleObserver {
 
     private var mClickListener: PageClickListener? = null
 
+    private var mExposureHelper: ExposureHelper? = null
+
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         // 读取自定义的属性
@@ -105,6 +107,14 @@ class VPBanner : ViewPager, DefaultLifecycleObserver {
             Log.e(TAG, "startLoop")
             mLoopHandler?.sendEmptyMessageDelayed(LOOP_NEXT, mLoopDuration)
         }
+        // 开始轮播时开始曝光（可见时会触发轮播）
+        mExposureHelper?.startExposure(currentItem)
+    }
+
+    fun stopLoop() {
+        // 停止轮播时结束曝光（不可见时会停止轮播）
+        mExposureHelper?.endExposure()
+        mLoopHandler?.removeMessages(LOOP_NEXT)
     }
 
     fun setPageClickListener(listener: PageClickListener?) {
@@ -129,10 +139,6 @@ class VPBanner : ViewPager, DefaultLifecycleObserver {
      */
     fun setLoopOrientation(@LoopOrientation orientation: Int) {
         this.mLoopOrientation = orientation
-    }
-
-    fun stopLoop() {
-        mLoopHandler?.removeMessages(LOOP_NEXT)
     }
 
     private fun loopNext() {
@@ -308,5 +314,13 @@ class VPBanner : ViewPager, DefaultLifecycleObserver {
                 else -> it.onDismiss()
             }
         }
+    }
+
+    fun bindExposureHelper(exposureHelper: ExposureHelper?) {
+        mExposureHelper = exposureHelper
+        mExposureHelper?.let {
+            addOnPageChangeListener(it)
+        }
+        mExposureHelper?.startExposure(currentItem)
     }
 }

@@ -51,4 +51,8 @@ abstract class VPAdapter<T>(private val loop:Boolean) : PagerAdapter() {
 
     // 单个page 站 banner 的比重，默认为1
     override fun getPageWidth(position: Int) = 1F
+
+    fun getShowDataList():List<T>{
+        return mData
+    }
 }

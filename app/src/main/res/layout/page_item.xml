@@ -1,28 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.hlox.android.banner.RoundCornerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<com.hlox.android.banner.helper.ExposureLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/exposure_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:ignore="MissingDefaultResource">
 
-    <ImageView
-        android:id="@+id/image"
+    <com.hlox.android.banner.RoundCornerFrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"/>
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#AAAAAAAA"
-        android:fontFamily="sans-serif-black"
-        android:gravity="center"
-        android:paddingVertical="4dp"
-        android:layout_gravity="bottom"
-        android:textColor="#FFFFFFFF"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
 
-</com.hlox.android.banner.RoundCornerFrameLayout>
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="#AAAAAAAA"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center"
+            android:paddingVertical="4dp"
+            android:textColor="#FFFFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+    </com.hlox.android.banner.RoundCornerFrameLayout>
+</com.hlox.android.banner.helper.ExposureLayout>
