@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'com.hlox.android.vpbanner'
+    namespace 'com.hlox.android.exposure'
     compileSdk 33
 
     defaultConfig {
@@ -32,7 +32,7 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
     implementation 'androidx.core:core-ktx:+'
